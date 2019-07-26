@@ -1,11 +1,13 @@
 import React from 'react';
 
-const HighScores = () => {
+const HighScores = (props) => {
     return (
       <div className="HighScores">
-          <h1>These are High Scores</h1>
+          HI FROM HIGH SCORES!
+          {props.users.map(user => user.username)}
       </div>
     );
 }
 
 export default HighScores;
+

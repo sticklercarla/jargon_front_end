@@ -7,9 +7,14 @@ class GameForm extends React.Component {
         difficulty: ""
     }
 
+    handleChange = (e) => {
+        console.log(e)
+    }
+
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
+            
+            <form>
             <p>Select a difficulty level:</p>
                 <label>
                     <input
@@ -39,10 +44,10 @@ class GameForm extends React.Component {
                     Hard
                 </label>
             <p>Select Your Category</p>
-            
+
             <button type="submit">Make your choice</button>
             </form>
-        );
+        )
     }
 }
 

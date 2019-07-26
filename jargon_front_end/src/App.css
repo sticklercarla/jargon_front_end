@@ -1,5 +1,37 @@
+body {
+  background-color: darkgrey;
+}
+
+
 .App {
   text-align: center;
+  margin: 20px;
+  padding: 20px;
+  background-color: lightgrey;
+  display: flex;
+  flex-direction: column;
+}
+
+.GameBody {
+  border: 1px black solid;
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.Game {
+  display: flex;
+  justify-content: space-between;
+}
+
+.Header {
+  display: flex;
+  flex-direction: column;
+  border: 1px black solid;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-around;
 }
 
 .App-logo {

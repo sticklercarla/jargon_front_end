@@ -4,18 +4,24 @@ import GameForm from '../components/GameForm.js'
 import Rules from '../components/Rules.js'
 import HighScores from '../components/HighScores.js'
 import Game from './Game.js'
+import { Switch, Route } from 'react-router-dom'
 
 class GameBody extends React.Component {
+  
+
   render() {
+
     return (
-      <div className="GameBody">
-        Hi from the GameBody
-        <Login />
-        <GameForm />
-        <Rules />
-        <HighScores />
-        <Game />
-      </div>
+      <Switch>
+        <div className="GameBody">
+          <Route path="/login" component={Login} />
+          <Route path="/gameform" component={GameForm} />
+          <Route path="/rules" component={Rules} />
+          <Route path="/highscores" render={(routerProps) => <HighScores {...routerProps} users={this.props.users} />} />
+          <Route path="/game" component={Game}/>
+          <Route exact path="/" component={Login} />
+        </div>
+      </Switch>
     );
   }
 }

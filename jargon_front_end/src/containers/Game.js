@@ -7,10 +7,9 @@ class Game extends React.Component {
     render() {
       return (
         <div className="Game">
-          Hi from the Game
-          {/* <CorrectWordBank />
+          <CorrectWordBank />
           <GameCanvas />
-          <WordBank /> */}
+          <WordBank />
         </div>
       );
     }
