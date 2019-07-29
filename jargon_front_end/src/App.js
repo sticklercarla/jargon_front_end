@@ -7,7 +7,8 @@ import GameBody from './containers/GameBody.js'
 class App extends React.Component {
 
   state = {
-    users: []
+    users: [],
+    currentUser: ""
   }
 
   componentDidMount() {
@@ -16,11 +17,15 @@ class App extends React.Component {
     .then((jsonUsers) => this.setState({ users: jsonUsers }))
   }
 
+  setCurrentUser = (userObj) => {
+    console.log(userObj)
+  }
+
   render() {
     return (
       <div className="App"> 
         <Header />
-        <GameBody users={this.state.users}/>
+        <GameBody setCurrentUser={this.setCurrentUser} users={this.state.users}/>
       </div>
     );
   }

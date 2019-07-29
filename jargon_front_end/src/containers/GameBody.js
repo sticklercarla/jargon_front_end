@@ -10,11 +10,10 @@ class GameBody extends React.Component {
   
 
   render() {
-
     return (
       <Switch>
         <div className="GameBody">
-          <Route path="/login" component={Login} />
+          <Route path="/login" render={(routerProps) => <Login {...routerProps} setCurrentUser={this.props.setCurrentUser} />} />
           <Route path="/gameform" component={GameForm} />
           <Route path="/rules" component={Rules} />
           <Route path="/highscores" render={(routerProps) => <HighScores {...routerProps} users={this.props.users} />} />

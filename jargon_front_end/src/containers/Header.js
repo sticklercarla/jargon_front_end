@@ -6,8 +6,8 @@ const Header = () => {
       <div className="Header">
           <h1>JARGON</h1>
           <div className="nav">
-          <Link to="/rules">Rules</Link>
           <Link to="/login">Login</Link>
+          <Link to="/rules">Rules</Link>
           <Link to="/gameform">Play</Link>
           <Link to="/game">Game</Link>
           <Link to="/highscores">High Scores</Link>
