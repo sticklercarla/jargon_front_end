@@ -1,34 +1,51 @@
 import React from 'react';
 import './App.css';
-import Header from './containers/Header.js'
-import GameBody from './containers/GameBody.js'
+
+import Login from './components/Login.js'
+import SignUp from './components/SignUp.js'
+import Profile from './containers/Profile.js'
+import { Switch, Route } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 
 class App extends React.Component {
 
   state = {
-    users: [],
-    currentUser: ""
+    games: [],
+    username: "",
   }
 
   componentDidMount() {
-    fetch('http://localhost:3000/users')
+    fetch('http://localhost:3000/games')
     .then(res => res.json())
-    .then((jsonUsers) => this.setState({ users: jsonUsers }))
+    .then((jsonGames) => this.setState({ games: jsonGames }))
+
+    if (localStorage.token) {
+      fetch('http://localhost:3000/profile', {
+        headers: {
+          Authorization: localStorage.token
+        }
+      })
+      .then(res => res.json())
+      .then(profileData => {
+        this.setState({username: profileData.username})
+      })
+    }
   }
 
-  setCurrentUser = (userObj) => {
-    console.log(userObj)
-  }
 
   render() {
     return (
+      <Switch>
       <div className="App"> 
-        <Header />
-        <GameBody setCurrentUser={this.setCurrentUser} users={this.state.users}/>
+        <Route path="/login" component={Login} />
+        <Route path="/signup" component={SignUp}/>
+        <Route path="/profile" render={(routerProps) => <Profile {...routerProps} profileData={this.state} />} />
+        <Route exact path="/" component={Login} />
       </div>
+      </Switch>
     );
   }
 }
 
-export default App;
+export default withRouter(App);

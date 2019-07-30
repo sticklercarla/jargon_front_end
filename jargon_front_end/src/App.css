@@ -31,7 +31,14 @@ body {
 
 .nav {
   display: flex;
-  justify-content: space-around;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+li {
+  list-style: none;
+  display: inline-block;
 }
 
 .App-logo {
