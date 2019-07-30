@@ -3,7 +3,7 @@ import React from 'react';
 class Header extends React.Component{
 
   handleClick = (e) => {
-    this.props.updateState(e.target.id)
+    this.props.updatePage(e.target.id)
   }
 
   logout = (e) => {

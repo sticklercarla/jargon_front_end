@@ -2,6 +2,10 @@ body {
   background-color: darkgrey;
 }
 
+#canvas {
+  border: 1px white solid;
+  height: 90vh;
+}
 
 .App {
   text-align: center;
@@ -12,10 +16,15 @@ body {
   flex-direction: column;
 }
 
+.GameCanvas {
+  background: black;
+}
+
 .GameBody {
-  border: 1px black solid;
   margin-top: 10px;
   padding: 10px;
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .Game {

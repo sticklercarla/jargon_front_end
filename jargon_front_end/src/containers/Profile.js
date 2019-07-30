@@ -8,7 +8,7 @@ class Profile extends React.Component {
         page: "profile"
     }
 
-    updateState = (e) => {
+    updatePage = (e) => {
         this.setState({ page: e })
     }
 
@@ -16,8 +16,8 @@ class Profile extends React.Component {
         console.log(this.props.history)
         return(
             <div>
-                <Header history={this.props.history} updateState={this.updateState} profileData={this.props.profileData} />
-                <GameBody page={this.state.page} profileData={this.props.profileData} />
+                <Header history={this.props.history} updatePage={this.updatePage} profileData={this.props.profileData} />
+                <GameBody page={this.state.page} profileData={this.props.profileData} updatePage={this.updatePage}/>
             </div>
         )
     }

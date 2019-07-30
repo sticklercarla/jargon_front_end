@@ -3,23 +3,31 @@ import React from 'react';
 class GameForm extends React.Component {
     
     state = {
-        category: "",
+        category: "animals",
         difficulty: ""
     }
 
     handleChange = (e) => {
-        console.log(e)
+        this.setState({ [e.target.name]: e.target.value })
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault()
+        this.props.handleGameForm(this.state)
+        this.props.updatePage("game")
     }
 
     render() {
+        console.log(this)
         return (
             
-            <form>
+            <form onSubmit={this.handleSubmit} >
             <p>Select a difficulty level:</p>
                 <label>
                     <input
                     type="radio"
                     value="easy"
+                    name="difficulty"
                     checked={this.state.difficulty === "easy"}
                     onChange={this.handleChange}
                     />
@@ -29,6 +37,7 @@ class GameForm extends React.Component {
                     <input
                     type="radio"
                     value="medium"
+                    name="difficulty"
                     checked={this.state.difficulty === "medium"}
                     onChange={this.handleChange}
                     />
@@ -38,14 +47,18 @@ class GameForm extends React.Component {
                     <input
                     type="radio"
                     value="hard"
+                    name="difficulty"
                     checked={this.state.difficulty === "hard"}
                     onChange={this.handleChange}
                     />
                     Hard
                 </label>
             <p>Select Your Category</p>
-
-            <button type="submit">Make your choice</button>
+                <select name="category" onChange={this.handleChange}>
+                    <option value="animals">Animals</option>
+                    <option value="colors">Colors</option>
+                </select>
+             <button type="submit">Make your choice</button>
             </form>
         )
     }
