@@ -4,7 +4,7 @@ import React from 'react';
 class CorrectWordBank extends React.Component {
   
   makeWordDivs = () => {
-    return this.props.correctWords.map(word => <div>{word.spanish}</div>)
+    return this.props.correctWords.map(word => <div className="correct-word">{word.spanish}</div>)
   }
   
   render() {

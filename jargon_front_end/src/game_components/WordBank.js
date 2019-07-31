@@ -13,7 +13,6 @@ class WordBank extends React.Component {
     render() {
       return (
         <div className="WordBank">
-          <h4> WordBank </h4>
           {this.words()}
         </div>
       );

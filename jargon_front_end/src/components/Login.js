@@ -30,13 +30,13 @@ class Login extends React.Component {
       data => {
       if (data.token)  {
         localStorage.token = data.token
+        this.props.setUsername(this.state.username)
         this.props.history.push('/profile')
       }
     })
     }
 
   render() {
-
     return (
         <div className="login">
           <h1>Login</h1>

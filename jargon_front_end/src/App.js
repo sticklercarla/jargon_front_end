@@ -38,15 +38,18 @@ class App extends React.Component {
     }
   }
 
+  setUsername = (username) => {
+    this.setState({ username: username })
+  }
 
   render() {
     return (
       <Switch>
       <div className="App"> 
-        <Route path="/login" component={Login} />
+        <Route path="/login" render={(routerProps) => <Login {...routerProps} setUsername={this.setUsername} />} />
         <Route path="/signup" component={SignUp}/>
         <Route path="/profile" render={(routerProps) => <Profile {...routerProps} profileData={this.state} />} />
-        <Route exact path="/" component={Login} />
+        <Route exact path="/" render={(routerProps) => <Login {...routerProps} setUsername={this.setUsername} />} /> 
       </div>
       </Switch>
     );

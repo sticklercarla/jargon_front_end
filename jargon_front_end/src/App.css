@@ -2,6 +2,15 @@ body {
   background-color: darkgrey;
 }
 
+h1, h2{
+  font-family: 'Saira Stencil One', cursive;
+}
+
+h1 {
+  font-size: 50px;
+  margin: 0;
+}
+
 #canvas {
   border: 1px white solid;
   height: 90vh;
@@ -29,18 +38,78 @@ body {
 
 .Game {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .WordBank {
+  /* overflow-y: scroll; */
+  max-height: 700px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.Word {
+  color: black;
+}
+
+.english-word:hover {
+  background-color: darkgray;
+  color: white;
+  cursor: pointer;
+}
+
+.english-word {
+  border: 1px black solid;
+  border-radius: 25px;
+  padding: 5px;
+  margin: 2px;
+  background: pink;
+  display: inline-block;
+}
+
+.english-word:active {
+  background-color: grey;
+}
+
+.CorrectWordBank {
   overflow-y: scroll;
-  max-height: 600px;
+  max-height: 700px;
+  flex-grow: 1;
+}
+
+.correct-word {
+  border: 1px black solid;
+  border-radius: 25px;
+  padding: 5px;
+  margin: 2px;
+  background: pink;
+  display: inline-block;
 }
 
 .Header {
   display: flex;
   flex-direction: column;
   border: 1px black solid;
+  background-color: white;
+}
+
+li {
+  border: 1px black solid;
+  border-radius: 25px;
+  padding: 5px;
+  background-color: pink;
+}
+
+li:hover {
+  color: pink;
+  cursor: pointer;
+  background-color: grey;
+}
+
+li:active {
+  background-color: darkgray;
 }
 
 .nav {
