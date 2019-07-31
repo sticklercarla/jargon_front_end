@@ -55,7 +55,12 @@ class GameForm extends React.Component {
             <p>Select Your Category</p>
                 <select name="category" onChange={this.handleChange}>
                     <option value="animals">Animals</option>
-                    <option value="colors">Colors</option>
+                    <option value="directions">Directions</option>
+                    <option value="household_items">Household Items</option>
+                    <option value="food">Food</option>
+                    <option value="colors_shapes">Colors and Shapes</option>
+                    <option value="relationships">Relationships</option>
+                    <option value="activities">Activities</option>
                 </select>
              <button type="submit">Make your choice</button>
             </form>

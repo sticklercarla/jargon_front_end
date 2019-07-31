@@ -18,7 +18,7 @@ class Game extends React.Component {
         <div className="Game">
           <CorrectWordBank />
           <GameCanvas wordBank={this.props.wordBank} gameDetails={this.props.gameDetails} />
-          <WordBank />
+          <WordBank wordBank={this.props.wordBank} />
         </div>
       );
     }
