@@ -33,7 +33,8 @@ class Game extends React.Component {
       } 
       this.setState({
         incorrectWords: [...this.state.incorrectWords, niceWord]
-      }, () => console.log(this.state.incorrectWords))
+      })
+      // , () => console.log(this.state.incorrectWords))
       return false
     }
 

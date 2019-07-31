@@ -9,13 +9,10 @@ class GameCanvas extends Component {
 
     constructor(props) {
         super(props);
-        console.log(this)
         this.matrix = this.createMatrix(maxWidth,maxHeight);
         this.piece = this.createPiece();
         this.word = this.createWord();
-        // this.wordBank = this.getWordBank()
-
-        this.timer  = 0;
+        this.timer = 0;
         this.dropCounter = 0;
 
         this.pos = {x:1, y:0};
@@ -24,7 +21,9 @@ class GameCanvas extends Component {
             pos: this.pos,
             score: 0,
             speed: this.setSpeed(),
-            gameStatus: 'play'
+            gameStatus: 'play',
+            correctWordCount: 0,
+            duration: 0
         };
 
         this.move = this.move.bind(this);
@@ -115,6 +114,24 @@ class GameCanvas extends Component {
         });
     }
 
+    resetDuration = () => {
+        let difference = this.timer - this.state.duration
+        this.setState({
+            duration: difference
+        })
+    }
+
+    matchSuccess(){
+        let _score = this.state.score+10;
+        let _speed = this.state.speed - 100;
+        let _correctWords = this.state.correctWordCount + 1;
+        this.setState({
+            score: _score,
+            speed: _speed,
+            correctWordCount: _correctWords
+        });        
+    }
+
     sweep(){
         outer: for(let y=this.matrix.length-1; y>0; y--){
             for (let x=0; x<this.matrix[y].length; x++){
@@ -135,6 +152,10 @@ class GameCanvas extends Component {
         }
     }
 
+    saveGame = () => {
+        console.log(this.state)
+    }
+
     playerDrop = ()=>{
         this.dropCounter = 0;
         this.pos.y++;
@@ -143,17 +164,17 @@ class GameCanvas extends Component {
             this.pos.y--;
             if (this.pos.y<1){
                 this.setState({
-                    gameStatus:'gameover'
-                });
+                    gameStatus:'gameover',
+                    duration: this.timer
+                }, this.saveGame() );
+                
             }
 
-            //if droping word matches selected word skip merge
             if( this.props.compareWords(this.word) ){
-                console.log("True")
                 this.reset();
                 this.sweep();
+                this.matchSuccess();
             } else {
-                console.log("TFalse")
                 this.merge();
                 this.reset();
                 this.sweep();
@@ -236,10 +257,6 @@ class GameCanvas extends Component {
         })
     }
 
-    getWordBank = () => {
-    //   return this.props.wordBank
-    }
-
     createWord = (wordArray) => {
                 // This is reference const wordTest = [[["G","A","T","A"]], [["P","E","R","R","A"]]]
                 // let wordList = []
@@ -251,10 +268,7 @@ class GameCanvas extends Component {
         let randomWord = ""
         do {
             randomWord = this.props.wordBank[Math.floor(Math.random() * this.props.wordBank.length)];
-            // debugger
-        } while (randomWord.spanish.length > 10)
-
-        // debugger
+        } while (randomWord.spanish.length > 16)
 
         return new Array(randomWord.spanish.split(""))
     }
@@ -299,7 +313,6 @@ class GameCanvas extends Component {
     }
 
     render() {
-        // debugger
         return (
             <div>
             <div className={'leftBox'}>
@@ -314,7 +327,6 @@ class GameCanvas extends Component {
                 <br />
                 <strong>&nbsp; SCORE : {this.state.score}</strong><br/>
                 <strong>&nbsp; SPEED : {this.state.speed}</strong><br/>
-                <strong>&nbsp; STATUS : {this.state.gameStatus}</strong><br/>
             </div>
             </div>
         );
