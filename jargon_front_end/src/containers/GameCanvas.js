@@ -131,6 +131,7 @@ class GameCanvas extends Component {
                     gameStatus:'gameover'
                 });
             }
+            //if droping word matches selected word skip merge
             this.merge();
             this.reset();
             this.sweep();
@@ -199,24 +200,26 @@ class GameCanvas extends Component {
             // up 38
             // down 40
 
-            if (e.keyCode===37){
-                this.move(-1);
-            } else if (e.keyCode===39){
-                this.move(1);
-            } else if (e.keyCode===38){
-                this.rotate();
-            } else if (e.keyCode===40){
+            // if (e.keyCode===37){
+            //     this.move(-1);
+            // } else if (e.keyCode===39){
+            //     this.move(1);
+            // } else if (e.keyCode===38){
+            //     this.rotate();
+            // } else 
+            if (e.keyCode===40){
                 this.playerDrop();
             }
         })
     }
 
     getWordBank = () => {
-      
+
       return 
     }
 
     createWord = (wordArray) => {
+      //this.props.wordbank 
       const wordList = [[["G","A","T","O"]], [["P","E","R","R","O"]]]
       return wordList[ Math.floor(Math.random()*wordList.length) ];
     }

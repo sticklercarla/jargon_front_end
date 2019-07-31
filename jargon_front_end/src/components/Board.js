@@ -34,10 +34,11 @@ export default class Board extends React.Component{
                 // context.fillText(oldText, xCoordinate, yCoordinate);
                 // context.fillStyle = '#000000'; // or whatever color the text should be.
                 // context.fillText(newText, xCoordinate, yCoordinate);
-                // this.ctx.fillStyle = "#000"
-                // this.ctx.
+                this.ctx.fillStyle = "#000"
+                this.ctx.fillRect(x+this.props.pos.x, y+this.props.pos.y -2,1,1)
                 this.ctx.fillStyle = "#FFF"
                 this.ctx.font = "1px Courier"
+                
                 this.ctx.fillText(col,
                     x+this.props.pos.x,
                     y+this.props.pos.y);
