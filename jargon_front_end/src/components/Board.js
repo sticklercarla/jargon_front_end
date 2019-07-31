@@ -13,7 +13,7 @@ export default class Board extends React.Component{
 
         this.props.matrix.forEach((row,y)=>{
             row.forEach((col,x)=>{
-               this.ctx.fillStyle = (col===1)?'#ff0000':'#000';
+               this.ctx.fillStyle = (col===1)?'#ff0099':'#000';
                this.ctx.fillRect(x,y,0.9,0.9);
             });
         });
@@ -51,7 +51,7 @@ export default class Board extends React.Component{
         if (this.canvas){
             this.ctx = this.canvas.getContext('2d');
             this.ctx.fillStyle = '#000';
-            this.ctx.scale(30,30);
+            this.ctx.scale(27,27);
             this.ctx.fillRect(0,0,10,20);
         }
         this.draw();
@@ -64,7 +64,7 @@ export default class Board extends React.Component{
     render(){
         return(
             <div className="GameCanvas">
-                <canvas ref={'canvas'} width={300} height={600}/>
+                <canvas ref={'canvas'} width={500} height={550}/>
             </div>
         )
     }
