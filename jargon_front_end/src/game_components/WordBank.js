@@ -5,8 +5,8 @@ import Word from '../components/Word.js'
 class WordBank extends React.Component {
 
   words = () => {
-    return this.props.wordBank.map(word => {
-      return <Word word={word.obj}/>
+    return this.props.wordBank.map(wordObj => {
+      return <Word key={wordObj.id} word={wordObj}/>
     })
   }
 
