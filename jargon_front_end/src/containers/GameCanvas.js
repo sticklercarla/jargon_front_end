@@ -15,7 +15,7 @@ class GameCanvas extends Component {
         this.timer  = 0;
         this.dropCounter = 0;
 
-        this.pos = {x:3, y:0};
+        this.pos = {x:2, y:0};
 
         this.state = {
             pos: this.pos,
@@ -219,9 +219,11 @@ class GameCanvas extends Component {
     }
 
     createWord = (wordArray) => {
-      //this.props.wordbank 
-      const wordList = [[["G","A","T","O"]], [["P","E","R","R","O"]]]
-      return wordList[ Math.floor(Math.random()*wordList.length) ];
+        //this.props.wordbank 
+        const stringArray = ["GATA","PERRA","BURRA"]
+        let wordList = []
+        wordList.push(stringArray.map(word => word.split("")))
+        return wordList[ Math.floor(Math.random()*wordList.length) ];
     }
 
     createMatrix = (w, h) => {
