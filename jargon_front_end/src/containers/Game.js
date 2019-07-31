@@ -6,18 +6,18 @@ import WordBank from '../game_components/WordBank.js'
 class Game extends React.Component {
     
   state = {
-    wordBank: [],
+    selectedWord: "",
+    droppingWord: "",
     correctWords: [],
     incorrectWords: []
   }
 
-
     render() {
-      // console.log(this.props)
+      console.log(this.props)
       return (
         <div className="Game">
           <CorrectWordBank />
-          <GameCanvas gameDetails={this.props.gameDetails} />
+          <GameCanvas wordBank={this.props.wordBank} gameDetails={this.props.gameDetails} />
           <WordBank />
         </div>
       );

@@ -14,7 +14,7 @@ class GameForm extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault()
         this.props.handleGameForm(this.state)
-        this.props.updatePage("game")
+        // this.props.updatePage("game")
     }
 
     render() {

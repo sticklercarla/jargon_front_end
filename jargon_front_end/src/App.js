@@ -11,6 +11,7 @@ import { withRouter } from 'react-router-dom'
 class App extends React.Component {
 
   state = {
+    categories: [],
     games: [],
     username: "",
   }
@@ -19,6 +20,10 @@ class App extends React.Component {
     fetch('http://localhost:3000/games')
     .then(res => res.json())
     .then((jsonGames) => this.setState({ games: jsonGames }))
+
+    fetch('http://localhost:3000/categories')
+    .then(res => res.json())
+    .then(categoryData => this.setState({ categories: categoryData }))
 
     if (localStorage.token) {
       fetch('http://localhost:3000/profile', {

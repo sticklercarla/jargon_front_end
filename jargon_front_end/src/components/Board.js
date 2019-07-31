@@ -36,6 +36,7 @@ export default class Board extends React.Component{
                 // context.fillText(newText, xCoordinate, yCoordinate);
                 // this.ctx.fillStyle = "#000"
                 // this.ctx.
+                
                 this.ctx.fillStyle = "#FFF"
                 this.ctx.font = "1px Courier"
                 this.ctx.fillText(col,
