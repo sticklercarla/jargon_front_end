@@ -2,10 +2,16 @@ import React from 'react';
 
 
 class CorrectWordBank extends React.Component {
-    render() {
+  
+  makeWordDivs = () => {
+    return this.props.correctWords.map(word => <div>{word.spanish}</div>)
+  }
+  
+  render() {
       return (
         <div className="CorrectWordBank">
-          Hi from the CorrectWordBank
+          <h4> Correct Words </h4>
+          {this.makeWordDivs()}
         </div>
       );
     }

@@ -6,15 +6,14 @@ class WordBank extends React.Component {
 
   words = () => {
     return this.props.wordBank.map(wordObj => {
-      return <Word key={wordObj.id} word={wordObj}/>
+      return <Word key={wordObj.id} onWordClick={this.props.onWordClick} word={wordObj}/>
     })
   }
 
     render() {
-      console.log(this.props.wordBank)
       return (
         <div className="WordBank">
-          Hi from the WordBank
+          <h4> WordBank </h4>
           {this.words()}
         </div>
       );

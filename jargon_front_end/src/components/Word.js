@@ -1,12 +1,20 @@
 import React from 'react';
 
 
-const Word = (props) => {
+
+class Word extends React.Component {
+
+  handleClick = (e) => {
+    this.props.onWordClick(e.target.innerText)
+  }
+
+  render() {
     return (
-      <div className="Word">
-          <p>{props.word.english}</p>
+      <div  onClick={this.handleClick} name={this.props.word.english} className="Word">
+          <p>{this.props.word.english}</p>
       </div>
     );
+  }
 }
 
 export default Word;

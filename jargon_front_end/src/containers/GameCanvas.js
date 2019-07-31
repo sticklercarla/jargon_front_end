@@ -2,31 +2,46 @@ import React, {Component} from 'react';
 import Board from "../components/Board";
 
 // import {createMatrix, createPiece} from "./Utils";
+const maxWidth = 30
+const maxHeight = 20
 
 class GameCanvas extends Component {
 
-    constructor() {
-        super();
-        this.matrix = this.createMatrix(10,20);
+    constructor(props) {
+        super(props);
+        console.log(this)
+        this.matrix = this.createMatrix(maxWidth,maxHeight);
         this.piece = this.createPiece();
         this.word = this.createWord();
-        this.wordBank = this.getWordBank()
+        // this.wordBank = this.getWordBank()
 
         this.timer  = 0;
         this.dropCounter = 0;
 
-        this.pos = {x:2, y:0};
+        this.pos = {x:1, y:0};
 
         this.state = {
             pos: this.pos,
             score: 0,
-            speed: 1000,
+            speed: this.setSpeed(),
             gameStatus: 'play'
         };
 
         this.move = this.move.bind(this);
 
 
+    }
+
+    setSpeed() {
+        if(this.props.gameDetails.difficulty === "hard"){
+            return 50
+        } else if(this.props.gameDetails.difficulty === "medium") {
+            return 500
+        } else if (this.props.gameDetails.difficulty === "easy") {
+            return 1000
+        } else {
+            return 100
+        }
     }
 
     move(dir){
@@ -92,7 +107,7 @@ class GameCanvas extends Component {
 
     reset(){
         this.pos.y = 0;
-        this.pos.x = 3;
+        this.pos.x = 1;
         this.piece = this.createPiece();
         this.word = this.createWord();
         this.setState({
@@ -131,10 +146,18 @@ class GameCanvas extends Component {
                     gameStatus:'gameover'
                 });
             }
+
             //if droping word matches selected word skip merge
-            this.merge();
-            this.reset();
-            this.sweep();
+            if( this.props.compareWords(this.word) ){
+                console.log("True")
+                this.reset();
+                this.sweep();
+            } else {
+                console.log("TFalse")
+                this.merge();
+                this.reset();
+                this.sweep();
+            }
         }
         this.setState({
             pos: this.pos
@@ -185,7 +208,7 @@ class GameCanvas extends Component {
                 gameStatus:'play'
             });
             this.reset();
-            this.matrix = this.createMatrix(10,20);
+            this.matrix = this.createMatrix(maxWidth, maxHeight);
             this.update();
         }
 
@@ -207,23 +230,33 @@ class GameCanvas extends Component {
             // } else if (e.keyCode===38){
             //     this.rotate();
             // } else 
-            if (e.keyCode===40){
+            if (e.keyCode===65){
                 this.playerDrop();
             }
         })
     }
 
     getWordBank = () => {
-
-      return 
+    //   return this.props.wordBank
     }
 
     createWord = (wordArray) => {
-        //this.props.wordbank 
-        const stringArray = ["GATA","PERRA","BURRA"]
-        let wordList = []
-        wordList.push(stringArray.map(word => word.split("")))
-        return wordList[ Math.floor(Math.random()*wordList.length) ];
+                // This is reference const wordTest = [[["G","A","T","A"]], [["P","E","R","R","A"]]]
+                // let wordList = []
+                // stringArray.forEach((word) => {
+                //     wordList.push(new Array(word.split("")))
+                // })
+                // return wordList[ Math.floor(Math.random()*wordList.length) ]
+                // end reference 
+        let randomWord = ""
+        do {
+            randomWord = this.props.wordBank[Math.floor(Math.random() * this.props.wordBank.length)];
+            // debugger
+        } while (randomWord.spanish.length > 10)
+
+        // debugger
+
+        return new Array(randomWord.spanish.split(""))
     }
 
     createMatrix = (w, h) => {
@@ -266,6 +299,7 @@ class GameCanvas extends Component {
     }
 
     render() {
+        // debugger
         return (
             <div>
             <div className={'leftBox'}>

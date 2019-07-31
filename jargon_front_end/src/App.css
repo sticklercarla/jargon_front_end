@@ -32,6 +32,11 @@ body {
   justify-content: space-between;
 }
 
+.WordBank {
+  overflow-y: scroll;
+  max-height: 600px;
+}
+
 .Header {
   display: flex;
   flex-direction: column;
