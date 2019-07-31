@@ -18,7 +18,6 @@ class GameForm extends React.Component {
     }
 
     render() {
-        console.log(this)
         return (
             
             <form onSubmit={this.handleSubmit} >

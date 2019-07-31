@@ -12,7 +12,7 @@ class GameBody extends React.Component {
   }
 
   handleGameForm = (e) => {
-    this.setState({ gameDetails: e }, ()=> console.log(this.state))
+    this.setState({ gameDetails: e })
   }
 
   render () {

@@ -1,127 +1,285 @@
-import React from 'react';
+import React, {Component} from 'react';
+import Board from "../components/Board";
 
-class GameCanvas extends React.Component {
+// import {createMatrix, createPiece} from "./Utils";
 
-    state = {
-        current_word: "GATO",
-        incorrect_word_bank: [],
-        word_bank: ["DOG", "CAT", "DONKEY", "SHIT"],
-        correct_word_bank: [],
-        width: 18,
-        height: 20,
-        floor: 20,
-        arena: [],
-        dropCounter: 0,
-        dropInterval: 250,
-        lastTime: 0,
-        player: {
-          pos: {x: 4, y: 0},
-          word: "GATO"
-        },
-        score: 0, 
+class GameCanvas extends Component {
+
+    constructor() {
+        super();
+        this.matrix = this.createMatrix(10,20);
+        this.piece = this.createPiece();
+        this.word = this.createWord();
+        this.wordBank = this.getWordBank()
+
+        this.timer  = 0;
+        this.dropCounter = 0;
+
+        this.pos = {x:3, y:0};
+
+        this.state = {
+            pos: this.pos,
+            score: 0,
+            speed: 1000,
+            gameStatus: 'play'
+        };
+
+        this.move = this.move.bind(this);
+
+
     }
 
-    saveWordToBoard = (board, word) => {
-      const splitWord = this.state.player.word.split('')
-      splitWord.forEach((letter, x) => {
-        this.state.arena[this.state.floor][this.state.player.pos.x + x] = letter 
-        console.table(this.state.arena); 
-      })
-    }
-
-    checkCollision = (arena, player) => {
-      //Uncomment if I want to work with the x value of the word. 
-      // const splitWord = player.word.split('');
-      for(let x = 0; x < this.state.width; x++) {
-        if(this.state.player.pos.y > this.state.floor ) {
-          return true;
+    move(dir){
+        this.pos.x += dir;
+        if (this.collide()){
+            this.pos.x -= dir;
         }
-      }
-      return false;  
+        this.setState({
+            pos: this.pos
+        });
     }
+
+
+    collide(){
+        // const [m, o] = [this.piece, this.pos];
+        // for (let y=0; y<m.length; y++){
+        //   debugger
+        //     for (let x=0; x<m[y].length; x++){
+        //         if (
+        //             m[y][x]===1
+        //             && (
+        //                 this.matrix[y+o.y] && this.matrix[y+o.y][x+o.x]
+        //             ) !== 0
+        //         ){
+        //             return true;
+        //         }
+        //     }
+        // }
+
+        const [word, offset] = [this.word, this.pos];
+        for (let y=0; y<word.length; y++){
+            for (let x=0; x<word[y].length; x++){
+                if (
+                    word[y][x] !== 0
+                    && (
+                        this.matrix[y+offset.y] && this.matrix[y+offset.y][x+offset.x]
+                    ) !== 0
+                ){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    merge(){
+        // this.piece.forEach((row,y)=>{
+        //     row.forEach((col, x)=>{
+        //         if (col===1){
+        //             this.matrix[y+this.pos.y][x+this.pos.x] = 1;
+        //         }
+        //     })
+        // })
+        this.word.forEach((row,y)=>{
+          row.forEach((col, x)=>{
+              if (col!==0){
+                  this.matrix[y+this.pos.y][x+this.pos.x] = 1;
+              }
+          })
+      })
+        
+    }
+
+    reset(){
+        this.pos.y = 0;
+        this.pos.x = 3;
+        this.piece = this.createPiece();
+        this.word = this.createWord();
+        this.setState({
+            pos: this.pos
+        });
+    }
+
+    sweep(){
+        outer: for(let y=this.matrix.length-1; y>0; y--){
+            for (let x=0; x<this.matrix[y].length; x++){
+                if (this.matrix[y][x]===0){
+                    continue outer;
+                }
+            }
+            const row = this.matrix.splice(y,1)[0].fill(0);
+            this.matrix.unshift(row);
+            y++;
+            let _score = this.state.score+1;
+            let _speed = this.state.speed - 100;
+
+            this.setState({
+                score: _score,
+                speed: _speed
+            });
+        }
+    }
+
+    playerDrop = ()=>{
+        this.dropCounter = 0;
+        this.pos.y++;
+
+        if (this.collide()){
+            this.pos.y--;
+            if (this.pos.y<1){
+                this.setState({
+                    gameStatus:'gameover'
+                });
+            }
+            this.merge();
+            this.reset();
+            this.sweep();
+        }
+        this.setState({
+            pos: this.pos
+        });
+    }
+
+    rotate(){
+        this.rotatePiece();
+        while(this.collide()){
+            if (this.pos.x+this.piece[0].length>this.matrix[0].length){
+                this.pos.x --;
+            } else {
+                this.pos.x ++;
+            }
+        }
+        this.setState({
+            pos:this.pos
+        });
+    }
+
+    rotatePiece(){
+        for(let y=0; y<this.piece.length; y++){
+            for(let x=0; x<y; x++){
+                [
+                    this.piece[x][y],
+                    this.piece[y][x]
+                ] = [
+                    this.piece[y][x],
+                    this.piece[x][y]
+                ]
+            }
+        }
+        this.piece.reverse();
+    }
+
+    update = (time=0) => {
+        const deltaTime = time-this.timer;
+        this.timer = time;
+        this.dropCounter += deltaTime;
+        if (this.dropCounter>this.state.speed){
+            this.playerDrop();
+        }
+        if (this.state.gameStatus==='play'){
+            requestAnimationFrame(this.update);
+        } else if (this.state.gameStatus==='gameover'){
+            alert('GAME OVER !');
+            this.setState({
+                gameStatus:'play'
+            });
+            this.reset();
+            this.matrix = this.createMatrix(10,20);
+            this.update();
+        }
+
+    }
+
+    componentDidMount = () => {
+        this.update();
+        document.addEventListener('keydown',(e)=>{
+            // console.log(e.keyCode);
+            // left 37
+            // right 39
+            // up 38
+            // down 40
+
+            if (e.keyCode===37){
+                this.move(-1);
+            } else if (e.keyCode===39){
+                this.move(1);
+            } else if (e.keyCode===38){
+                this.rotate();
+            } else if (e.keyCode===40){
+                this.playerDrop();
+            }
+        })
+    }
+
+    getWordBank = () => {
       
-    createBoard = (height, width)=> {
-      const board = [];
-      while (this.state.height--) {
-        board.push(new Array(this.state.width).fill(0))
-      }
-      //Uncomment if I need to make a bottom array to act as a wall.
-      // board.push(new Array(width).fill(1))
-      return board;
+      return 
     }
 
-    drawWord = (word, offset) => {
-      context.fillStyle = "#FFF"
-      // context.fillRect(offset.x, offset.y, 1, 1)
-      context.fillText(word, offset.x , offset.y)
+    createWord = (wordArray) => {
+      const wordList = [[["G","A","T","O"]], [["P","E","R","R","O"]]]
+      return wordList[ Math.floor(Math.random()*wordList.length) ];
     }
 
-    drawCanvas = () => {
-      //Resets canvas so word doesn't persist on canvas
-      context.fillStyle = '#000';
-      context.fillRect(0, 0, canvas.width, canvas.height)
-      //redraws word
-      this.drawWord(this.state.player.word, this.state.player.pos)
-    }
-
-    assignNewWord = () => {
-      this.state.player.word = this.state.word[(this.state.word.length * Math.random() | 0)];
-    }
-
-    newWordToTop = () => {
-      this.state.player.pos.y = 0
-      this.assignNewWord()
-    // debugger
-    }
-
-    //adds to words y position making it move down the canvas
-    dropWord = () => {
-      this.state.player.pos.y++;
-      if(this.checkCollision(this.state.arena, this.state.player)) {
-        this.state.floor--;
-        this.state.player.pos.y--;
-        this.saveWordToBoard(this.state.arena, this.state.player)  
-        this.newWordToTop()
-      }
-      this.state.dropCounter = 0
-    }
-
-    update = (time = 0 ) => {
-      //The whole thing keeps track of how fast you fall
-      //DeltaTime keeps track of change between the time and the last time drop was called
-      //dropCounter increments over time.
-      //Each time down is pressed dropCounter is reset.
-      //Drop interval sets time between dropWord calls.
-      const deltaTime = this.state.time - this.state.lastTime;
-      this.state.dropCounter += deltaTime;
-      if (this.state.dropCounter > this.state.dropInterval) {
-        this.dropWord();
-      }
-
-      this.state.lastTime = this.state.time;
-      //End time function
-      this.drawCanvas();
-      requestAnimationFrame(this.update); 
+    createMatrix = (w, h) => {
+        let matrix = [];
+        while (h--) {
+            matrix.push(new Array(w).fill(0))
+        }
+        return matrix;
     }
     
-    render() {
-      return (
-        <div className="GameCanvas">
-          <canvas id="canvas" width="240" height="400"></canvas>
-        </div>
-      );
+    createPiece() {
+        const s = [
+            [1, 1, 0],
+            [0, 1, 1],
+            [0, 0, 0]
+        ];
+        const l = [
+            [0, 1, 0],
+            [0, 1, 0],
+            [0, 1, 1]
+        ];
+    
+        const o = [
+            [0, 0, 0, 0],
+            [0, 1, 1, 0],
+            [0, 1, 1, 0],
+            [0, 0, 0, 0],
+        ];
+    
+        const i = [
+            [0, 1, 0, 0],
+            [0, 1, 0, 0],
+            [0, 1, 0, 0],
+            [0, 1, 0, 0],
+        ]
+    
+        const pieceList = [s,l,o,i];
+        return pieceList[ Math.floor(Math.random()*pieceList.length) ];
+    
     }
-  }
 
-const canvas = document.getElementById('canvas')
-const context = canvas.getContext('2d')
-context.font = "1px Courier"
-context.scale(20,20)
+    render() {
+        return (
+            <div>
+            <div className={'leftBox'}>
+                <Board
+                    matrix={this.matrix}
+                    piece={this.piece}
+                    word={this.word}
+                    pos ={this.state.pos}
+                />
+            </div>
+            <div className={'leftBox'}>
+                <br />
+                <strong>&nbsp; SCORE : {this.state.score}</strong><br/>
+                <strong>&nbsp; SPEED : {this.state.speed}</strong><br/>
+                <strong>&nbsp; STATUS : {this.state.gameStatus}</strong><br/>
+            </div>
+            </div>
+        );
+    }
+}
 
-// document.addEventListener('keydown', event => {
-//   if (event.keyCode === 40) {
-//     dropWord();
-//   }
-// })
-  this.update();
-  export default GameCanvas;
+export default GameCanvas;
