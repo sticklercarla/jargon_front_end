@@ -13,7 +13,7 @@ export default class Board extends React.Component{
 
         this.props.matrix.forEach((row,y)=>{
             row.forEach((col,x)=>{
-               this.ctx.fillStyle = (col===1)?'#ff0099':'#000';
+               this.ctx.fillStyle = (col===1)?'#ffc0cb':'#000';
                this.ctx.fillRect(x,y,0.9,0.9);
             });
         });

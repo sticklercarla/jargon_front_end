@@ -153,7 +153,12 @@ class GameCanvas extends Component {
     }
 
     saveGame = () => {
-        console.log(this.state)
+        let wrapper = {
+            "score": this.state.score,
+            "duration": 100,
+            "correct_word_count": this.state.correctWordCount
+        }
+        this.props.createNewGame(wrapper)
     }
 
     playerDrop = ()=>{
@@ -224,13 +229,13 @@ class GameCanvas extends Component {
         if (this.state.gameStatus==='play'){
             requestAnimationFrame(this.update);
         } else if (this.state.gameStatus==='gameover'){
-            alert('GAME OVER !');
-            this.setState({
-                gameStatus:'play'
-            });
-            this.reset();
-            this.matrix = this.createMatrix(maxWidth, maxHeight);
-            this.update();
+            alert(`GAME OVER! Score: ${this.state.score}`);
+            // this.setState({
+            //     gameStatus:'play'
+            // });
+            // this.reset();
+            // this.matrix = this.createMatrix(maxWidth, maxHeight);
+            // this.update();
         }
 
     }

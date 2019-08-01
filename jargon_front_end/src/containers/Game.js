@@ -42,7 +42,7 @@ class Game extends React.Component {
       return (
         <div className="Game">
           <CorrectWordBank correctWords={this.state.correctWords} />
-          <GameCanvas wordBank={this.props.wordBank} gameDetails={this.props.gameDetails} compareWords={this.compareWords} />
+          <GameCanvas createNewGame={this.props.createNewGame} wordBank={this.props.wordBank} gameDetails={this.props.gameDetails} compareWords={this.compareWords} />
           <WordBank wordBank={this.props.wordBank} onWordClick={this.onWordClick} />
         </div>
       );

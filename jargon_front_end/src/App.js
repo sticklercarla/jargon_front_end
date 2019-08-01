@@ -14,6 +14,7 @@ class App extends React.Component {
     categories: [],
     games: [],
     username: "",
+    id: ""
   }
 
   componentDidMount() {
@@ -33,23 +34,44 @@ class App extends React.Component {
       })
       .then(res => res.json())
       .then(profileData => {
-        this.setState({username: profileData.username})
+        this.setState({username: profileData.username, id: profileData.id})
       })
     }
   }
 
-  setUsername = (username) => {
-    this.setState({ username: username })
+  createNewGame = (gameData) => {
+
+    fetch('http://localhost:3000/games', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        user_id: this.state.id,
+        score: gameData.score,
+        duration: gameData.duration,
+        correct_word_count: gameData.correct_word_count
+      })
+    })
+    .then(res => res.json())
+    .then(data => this.setState({ games: [...this.state.games, data]})
+    )
+
+  }
+
+  setUserState = (username, user_id) => {
+    this.setState({ username: username, id: user_id }, ()=> console.log(this.state))
   }
 
   render() {
     return (
       <Switch>
       <div className="App"> 
-        <Route path="/login" render={(routerProps) => <Login {...routerProps} setUsername={this.setUsername} />} />
-        <Route path="/signup" component={SignUp}/>
-        <Route path="/profile" render={(routerProps) => <Profile {...routerProps} profileData={this.state} />} />
-        <Route exact path="/" render={(routerProps) => <Login {...routerProps} setUsername={this.setUsername} />} /> 
+        <Route path="/login" render={(routerProps) => <Login {...routerProps} setUserState={this.setUserState} />} />
+        <Route path="/signup" render={(routerProps) => <SignUp {...routerProps} setUserState={this.setUserState} />} />
+        <Route path="/profile" render={(routerProps) => <Profile {...routerProps} createNewGame={this.createNewGame} profileData={this.state} />} />
+        <Route exact path="/" render={(routerProps) => <Login {...routerProps} setUserState={this.setUserState} />} /> 
       </div>
       </Switch>
     );

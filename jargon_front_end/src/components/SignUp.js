@@ -31,6 +31,7 @@ class SignUp extends React.Component {
         if (data.token)  {
           localStorage.token = data.token
           console.log(localStorage.token)
+          this.props.setUserState(this.state.username, data.user_id)
           this.props.history.push('/profile')
         }
       })
@@ -39,7 +40,7 @@ class SignUp extends React.Component {
     render() {
         return (
             <div className="signup">
-              <h1>Signup</h1>
+              <h1>Signup For JARGON</h1>
               <form onSubmit={this.onSubmit}>
                 <input 
                   type="text" 
